@@ -8,6 +8,7 @@ import '../leaves/leaves.dart';
 import '../performance-stats/performance-stats.dart';
 import '../../helpers/Routes.dart';
 import 'package:localstorage/localstorage.dart';
+import '../home/home_card.dart';
 
 class Home extends StatefulWidget {
   final String employeeName;
@@ -40,46 +41,7 @@ class _HomeState extends State<Home> {
   }
 
   //Create widget-elements here //
-  final cardWidget = Card(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        const ListTile(
-          leading: Icon(FontAwesomeIcons.clock),
-          title: Text('Attendance'),
-          trailing: Text('02,Dec 2019'),
-        ),
-        Container(
-          height: 250,
-          width: 200,
-          child: Center(
-            child: CircleAvatar(
-              backgroundColor: Colors.blue,
-              radius: 200,
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 80,
-                  ),
-                  Text(
-                    'Checked In',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    '09:45 AM',
-                    style: TextStyle(color: Colors.white, fontSize: 26),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
+  final cardWidget = HomeCard();
 
   int currentNavItem = 0;
   //onTab BottomNavigationbar Item
