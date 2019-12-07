@@ -12,7 +12,7 @@ class Routes {
       case 'home':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Home('Sabeel', 'Url')),
+          MaterialPageRoute(builder: (context) => Home()),
         );
         break;
       case 'profile':

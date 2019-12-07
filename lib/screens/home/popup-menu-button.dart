@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../api-services/User.dart';
+import '../../api-services/user.service.dart';
 import '../../helpers/Routes.dart';
 
 class WidgetPopupmenuButton {
@@ -8,7 +8,7 @@ class WidgetPopupmenuButton {
     return PopupMenuButton(
       onSelected: (result) {
         if (result == 'logout') {
-          User().logout(context);
+          UserService().logout(context);
         } else if (result == 'profile') {
           Routes().route(context, 'profile');
         }

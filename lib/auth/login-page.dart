@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hr_staff_app_flutter/models/user.model.dart';
 import './persistant-footer-buttons.dart';
-import '../api-services/User.dart';
+import '../api-services/user.service.dart';
 import '../screens/home/home.dart';
 import 'package:localstorage/localstorage.dart';
+import '../helpers/Routes.dart';
 
 void main() => runApp(Login());
 
@@ -30,7 +32,7 @@ class LoginLayoutState extends State<LoginLayout> {
   final userNameController = TextEditingController(text: 'sabeel@633');
   final passwordController = TextEditingController(text: 'sabeel@633');
   bool _loading = false;
-  Future<User> postUser;
+  Future<UserModel> postUser;
   final LocalStorage localStorage = new LocalStorage('flutter-key');
 
   @override
@@ -96,22 +98,10 @@ class LoginLayoutState extends State<LoginLayout> {
           });
           final username = userNameController.text;
           final password = passwordController.text;
-          User userResponse =
-              await User().sendLoginUserRequest(username, password);
-
+          UserModel userResponse =
+              await UserService().sendLoginUserRequest(username, password);
           if (userResponse != null) {
-            setState(() {
-              localStorage.setItem('empName', userResponse.employeeName);
-              localStorage.setItem('empImageUrl', userResponse.employeeImage);
-            });
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    Home(userResponse.employeeName, userResponse.employeeImage),
-              ),
-            );
+            Routes().route(context, 'home');
           }
           setState(() {
             _loading = false;

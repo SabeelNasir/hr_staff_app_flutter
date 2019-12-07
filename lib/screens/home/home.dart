@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hr_staff_app_flutter/screens/user/profile.dart';
 import '../home/popup-menu-button.dart';
 import '../user/profile.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../layouts/DrawerLayout.dart';
 import '../leaves/leaves.dart';
 import '../performance-stats/performance-stats.dart';
 import '../../helpers/Routes.dart';
 import 'package:localstorage/localstorage.dart';
 import '../home/home_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
-  final String employeeName;
-  final String empImageUrl;
-  Home(this.employeeName, this.empImageUrl);
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -21,17 +18,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  static String empImageUrl;
-  static String employeeName;
   List<Widget> pages;
   Widget currentPage;
   final LocalStorage localStorage = LocalStorage('flutter-key');
+  SharedPreferences sharedPrefs;
   @override
   void initState() {
-    empImageUrl = widget.empImageUrl;
-    employeeName = widget.employeeName;
-    pages = [Home(employeeName, empImageUrl), PerformanceStats(), Leaves()];
-    currentPage = Home(employeeName, empImageUrl);
+    pages = [Home(), PerformanceStats(), Leaves()];
+    currentPage = Home();
     super.initState();
   }
 
@@ -63,11 +57,26 @@ class _HomeState extends State<Home> {
     });
   }
 
+  Future setFutures() async {
+    sharedPrefs = await SharedPreferences.getInstance();
+    return sharedPrefs;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: localStorage.ready,
+        future: setFutures(),
         builder: (BuildContext context, snapshot) {
+          if (snapshot.hasData == null) {
+            return MaterialApp(
+                title: 'HrStaff Portal',
+                theme: ThemeData(primarySwatch: Colors.blue),
+                home: Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ));
+          }
           return MaterialApp(
             title: 'HrStaff Portal',
             theme: ThemeData(primarySwatch: Colors.blue),
@@ -80,7 +89,9 @@ class _HomeState extends State<Home> {
                   IconButton(
                     icon: CircleAvatar(
                       backgroundImage:
-                          NetworkImage(localStorage.getItem('empImageUrl')),
+                          //NetworkImage(localStorage.getItem('empImageUrl')),
+                          NetworkImage(
+                              sharedPrefs.getString('employeeImageUrl')),
                       radius: 30,
                     ),
                     onPressed: () {
