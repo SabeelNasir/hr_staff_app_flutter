@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../helpers/Routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../helpers/app.constants.dart';
 
 class UserService {
   //Post Login
@@ -15,9 +16,7 @@ class UserService {
     try {
       Map body = UserModel().mapSendBody(username, password);
       var json = jsonEncode(body);
-      final response = await http.post(
-          //'https://olive-emreports-aws-node.olivecliq.com/api/authenticate',
-          'http://192.168.1.12:3003/api/authenticate',
+      final response = await http.post(AppConstants.apiUrl + '/authenticate',
           headers: {HttpHeaders.contentTypeHeader: "application/json"},
           body: json);
       if (response.statusCode == 200) {

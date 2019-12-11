@@ -7,14 +7,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../helpers/Routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../helpers/app.constants.dart';
 
 class LeavesService {
   Future<List<LeavesModel>> getAvailedLeaves() async {
     List<LeavesModel> availedLeaves;
     SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     try {
-      final response = await http
-          .get('http://192.168.1.12:3003/api/availed-leaves', headers: {
+      final response =
+          await http.get(AppConstants.apiUrl + '/availed-leaves', headers: {
         HttpHeaders.contentTypeHeader: "application/json",
         HttpHeaders.authorizationHeader:
             "Bearer " + sharedPrefs.getString('token')
